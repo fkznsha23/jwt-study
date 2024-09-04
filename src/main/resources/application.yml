@@ -1,0 +1,35 @@
+spring:
+  application:
+    name: jwt-study
+
+  config:
+    import: optional:file:.env[.properties]
+
+  datasource:
+    url: jdbc://${HOST}:${MYSQL_PORT}/${MYSQL_DB_NAME}
+    username: ${MYSQL_USER}
+    password: ${MYSQL_DB_PASSWORD}
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+      id:
+        new_generator_mappings: true
+    show-sql: false
+    properties:
+      hibernate:
+        format_sql: true
+
+  data:
+    redis:
+      host: ${HOST}
+      port: ${REDIS_PORT}
+      password: ${REDIS_PASSWORD}
+
+jwt:
+  secretkey: ${SECRET_KEY}
+
+
+
+
