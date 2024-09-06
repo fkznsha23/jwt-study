@@ -27,6 +27,12 @@ public class JwtProvider {
     private final String AUTHORIZATION = "Authorization";
     private final String BEARER = "Bearer ";
 
+    /**
+     * api 요청 헤더에서 Access Token을 추출합니다.
+     * - 추출한 Access Token에서 Bearea을 제외합니다.
+     * @param request
+     * @return String AccessToken
+     */
     public String extractToken(HttpServletRequest request) {
 
         String bearerToken = request.getHeader(AUTHORIZATION);
@@ -40,6 +46,11 @@ public class JwtProvider {
 
     }
 
+    /**
+     * 인증 정보를 생성합니다.
+     * @param token
+     * @return Authentication auth
+     */
     public Authentication getAuthentication(String token) {
         String username = decodeUsername(token);
 
@@ -49,11 +60,21 @@ public class JwtProvider {
         return new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities());
     }
 
+    /**
+     * Payload에서 username을 추출합니다.
+     * @param token
+     * @return String username
+     */
     public String decodeUsername(String token) {
 
         return String.valueOf(getClaims(token).get("username"));
     }
 
+    /**
+     * Access Token에서 Payload를 추출합니다.
+     * @param token
+     * @return Claims claims
+     */
     private Claims getClaims(String token) {
         Claims claims = null;
         try {

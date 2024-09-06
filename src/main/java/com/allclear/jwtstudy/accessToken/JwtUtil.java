@@ -21,6 +21,11 @@ public class JwtUtil {
     private String SECRET_KEY;
     private final long VALID_TIME = (60*1000)*30;
 
+    /**
+     * Access Token을 생성합니다.
+     * @param username
+     * @return
+     */
     public String createAccessToken(String username) {
 
         Date now = new Date();
@@ -35,6 +40,10 @@ public class JwtUtil {
 
     }
 
+    /**
+     * Secret key에 알고리즘을 적용해 SecretKey 객체를 생성합니다.
+     * @return SecretKey
+     */
     public SecretKey getSecretKey() {
         byte[] keyBytes = Decoders.BASE64.decode(SECRET_KEY);
         return Keys.hmacShaKeyFor(keyBytes);

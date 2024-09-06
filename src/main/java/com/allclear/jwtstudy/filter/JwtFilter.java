@@ -21,18 +21,26 @@ public class JwtFilter extends OncePerRequestFilter {
 
     private final JwtProvider jwtProvider;
 
+    /**
+     * api 요청이 들어올 때 실행될 메소드입니다.
+     * @param request
+     * @param response
+     * @param filterChain
+     * @throws ServletException
+     * @throws IOException
+     */
     @Override
     protected void doFilterInternal(
             HttpServletRequest request,
             HttpServletResponse response,
             FilterChain filterChain) throws ServletException, IOException {
 
-        String token = jwtProvider.extractToken(request);
+        String noBearerToken = jwtProvider.extractToken(request);
 
-        log.info("total token = {}", token);
+        log.info("No bearer token = {}", noBearerToken);
 
-        if(token != null) {
-            Authentication authentication = jwtProvider.getAuthentication(token);
+        if(noBearerToken != null) {
+            Authentication authentication = jwtProvider.getAuthentication(noBearerToken);
             SecurityContextHolder.getContext().setAuthentication(authentication);
             log.info("authentication = {}", authentication);
         }
