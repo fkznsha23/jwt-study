@@ -19,6 +19,12 @@ public class UserDetailServiceImpl implements UserDetailsService {
 
     private final UserRepository userRepository;
 
+    /**
+     * username에 해당하는 사용자를 조회하고 UserDetailsImpl 객체를 생성합니다.
+     * @param username
+     * @return UserDetails userDetailsImpl
+     * @throws UsernameNotFoundException
+     */
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         User user = Optional.of(userRepository.findByUsername(username))

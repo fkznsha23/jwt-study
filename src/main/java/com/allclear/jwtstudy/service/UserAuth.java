@@ -17,6 +17,11 @@ public class UserAuth {
     private final JwtUtil jwtUtil;
     private final RefreshTokenManager refreshTokenManager;
 
+    /**
+     * Access Token과 Refresh Token이 저장된 Headers를 생성합니다.
+     * @param username
+     * @return HttpHeaders httpHeaders
+     */
     public HttpHeaders creatHeaders(String username) {
         HttpHeaders httpHeaders = new HttpHeaders();
         String accessToken = "Bearer " + jwtUtil.createAccessToken(username);
