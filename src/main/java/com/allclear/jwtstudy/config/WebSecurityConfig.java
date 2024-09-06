@@ -29,14 +29,6 @@ public class WebSecurityConfig {
     }
 
     @Bean
-    public WebSecurityCustomizer webSecurityCustomizer() {
-
-        return (web) -> web.ignoring().requestMatchers("/h2-console/**"
-                , "/favicon.ico"
-                , "/error");
-    }
-
-    @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .csrf(AbstractHttpConfigurer::disable)
