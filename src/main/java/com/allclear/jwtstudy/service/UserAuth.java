@@ -25,9 +25,9 @@ public class UserAuth {
     public HttpHeaders creatHeaders(String username) {
         HttpHeaders httpHeaders = new HttpHeaders();
         String accessToken = "Bearer " + jwtUtil.createAccessToken(username);
-        String refreshTokenId = refreshTokenManager.saveRefreshToken();
+        refreshTokenManager.saveRefreshToken(username);
         httpHeaders.set("Authorization", accessToken);
-        httpHeaders.set("RefreshtToken", refreshTokenId);
+        httpHeaders.set("RefreshToken", username);
 
         return httpHeaders;
     }
