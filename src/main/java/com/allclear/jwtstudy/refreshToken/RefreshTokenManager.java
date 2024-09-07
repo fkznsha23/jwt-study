@@ -10,7 +10,9 @@ import com.allclear.jwtstudy.accessToken.JwtUtil;
 
 import io.jsonwebtoken.Jwts;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @Component
 @RequiredArgsConstructor
 public class RefreshTokenManager {
@@ -25,12 +27,16 @@ public class RefreshTokenManager {
      * 생성한 Refresh Token을 Redis Cache에 저장합니다.
      * @return String refreshTokenKey
      */
-    public String saveRefreshToken() {
-        String refreshToken = createRefreshToken();
-        String key = refreshTokenCheck();
-        redisTemplate.opsForValue().set(key, refreshToken);
+    public String saveRefreshToken(String username) {
+        try {
+            String refreshToken = createRefreshToken();
+            refreshTokenCheck(username);
+            redisTemplate.opsForValue().set(username, refreshToken);
 
-        return key;
+            return username;
+        } catch (RuntimeException ex) {
+            return null;
+        }
     }
 
     /**
@@ -43,19 +49,15 @@ public class RefreshTokenManager {
     }
 
     /**
-     * key에 해당하는 RefreshToken이 존재하면 다시 난수를 생성하는 작업을 진행합니다.
-     *  - stackOverFlowError 가능성이 있어서 추후 수정 예정
-     * @return String refreshTokenKey
+     * key에 해당하는 refresh token이 존재하면 예외를 발생한다.
+     * @param username
      */
-    private String refreshTokenCheck() {
-        String key = createSecureRandom(KEY_LEN);
-        String refreshToken = getRefreshToken(key);
+    public void refreshTokenCheck(String username) {
+        String refreshToken = getRefreshToken(username);
 
         if(refreshToken != null) {
-            refreshTokenCheck();
+            throw new RuntimeException("이미 refresh token이 존재합니다.");
         }
-
-        return key;
     }
 
     /**
@@ -87,4 +89,5 @@ public class RefreshTokenManager {
         return String.valueOf(secureRandom.nextInt(limit));
 
     }
+
 }

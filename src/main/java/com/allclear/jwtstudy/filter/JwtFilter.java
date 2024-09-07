@@ -35,6 +35,8 @@ public class JwtFilter extends OncePerRequestFilter {
             HttpServletResponse response,
             FilterChain filterChain) throws ServletException, IOException {
 
+        log.info("api = {}", request.getRequestURI());
+
         String noBearerToken = jwtProvider.extractToken(request);
 
         log.info("No bearer token = {}", noBearerToken);
